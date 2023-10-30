@@ -1,0 +1,51 @@
+create table DimCause(
+    CauseKey INT PRIMARY KEY IDENTITY(1,1) not null sortkey distkey,
+    CauseId int not null,
+    CarrierDelay varchar(50) not null,
+    WeatherDelay varchar(50) not null,
+    SecurityDelay varchar(50) not null
+)diststyle key;
+
+create table DimFecha(
+    DateKey INT PRIMARY KEY IDENTITY(1,1) not null sortkey distkey,
+    DateId int not null,
+    Year int not null,
+    Quarter int not null,
+    Month int not null,
+    DayofMonth int not null,
+    DayOfWeek int not null,
+    FlightDate Date not null 
+)diststyle key;
+
+create table DimOrigen(
+    OriginKey INT PRIMARY KEY IDENTITY(1,1) not null sortkey distkey,
+    OriginAirportID int not null,
+    OriginState varchar(50) not null,
+    OriginCityName varchar(50) not null,
+    Origin varchar(50) not null
+)diststyle key;
+
+create table DimDestino(
+    DestinationKey INT PRIMARY KEY IDENTITY(1,1) not null sortkey distkey,
+    DestAirportID int not null,
+    Dest varchar(50) not null,
+    DestCityName varchar(50) not null,
+    DestState varchar(50) not null
+)diststyle key;
+
+create table vuelofact(
+    FlightKey int not null primary key,
+    DateKey int not null,
+    OriginKey int not null,
+    DestinationKey int not null,
+    CauseKey int not null,
+    Diverted varchar(50) not null,
+    Cancelled varchar(50) not null,
+    DepDelayMinutes varchar(50) not null, 
+    CancellationCode varchar(50) not null
+) diststyle key distkey (FlightKey);
+
+ALTER TABLE vuelofact ADD constraint fecha FOREIGN KEY (DateKey) REFERENCES DimFecha(DateKey);
+ALTER TABLE vuelofact ADD constraint origen FOREIGN KEY (OriginKey) REFERENCES DimOrigen(OriginKey);
+ALTER TABLE vuelofact ADD constraint destino FOREIGN KEY (DestinationKey) REFERENCES DimDestino(DestinationKey);
+ALTER TABLE vuelofact ADD constraint causa FOREIGN KEY (CauseKey) REFERENCES DimCause(CauseKey);

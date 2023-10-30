@@ -1,0 +1,51 @@
+CREATE TABLE DimFecha (
+    DateKey INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    DateId INT NOT NULL,
+    Year INT NOT NULL,
+    Quarter INT NOT NULL,
+    Month INT NOT NULL,
+    DayofMonth INT NOT NULL,
+    DayOfWeek INT NOT NULL,
+    FlightDate DATE NOT NULL
+);
+
+CREATE TABLE DimOrigen (
+    OriginKey INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    OriginAirportID INT NOT NULL,
+    OriginState VARCHAR(50) NOT NULL,
+    OriginCityName VARCHAR(50) NOT NULL,
+    Origin VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE DimDestino (
+    DestinationKey INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    DestAirportID INT NOT NULL,
+    Dest VARCHAR(50) NOT NULL,
+    DestCityName VARCHAR(50) NOT NULL,
+    DestState VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE DimCausa (
+    CauseKey INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    CauseId INT NOT NULL,
+    CarrierDalay VARCHAR(50) NOT NULL,
+    WeatherDelay VARCHAR(50) NOT NULL,
+    SecurityDelay VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE vuelofact (
+    FlightKey INT NOT NULL,
+    DateKey INT NOT NULL,
+    OriginKey INT NOT NULL,
+    DestinationKey INT NOT NULL,
+    CauseKey INT NOT NULL,
+    Diverted VARCHAR(50) NOT NULL,
+    Cancelled VARCHAR(50) NOT NULL,
+    DepDelayMinutes VARCHAR(50) NOT NULL,
+    CancellationCode VARCHAR(50) NOT NULL,
+    PRIMARY KEY (FlightKey),
+    FOREIGN KEY (DateKey) REFERENCES DimFecha (DateKey),
+    FOREIGN KEY (OriginKey) REFERENCES DimOrigen (OriginKey),
+    FOREIGN KEY (DestinationKey) REFERENCES DimDestino (DestinationKey),
+    FOREIGN KEY (CauseKey) REFERENCES DimCausa (CauseKey)
+);
